@@ -6,12 +6,14 @@
 	See the first answer here for a good discussion on why: 
 	http://stackoverflow.com/questions/147454/why-is-using-a-wild-card-with-a-java-import-statement-bad
 */
+package cavalcanti;
 import java.util.Random;
 import java.security.SecureRandom;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Scanner;
 
 /**
 * The NSALoginController class handles password hashing and verification
@@ -103,13 +105,26 @@ public final class NSALoginController {
 	* @param user The user whose password needs to be hashed.
 	* @exception Exception If there is a problem with the chosen hash function.
 	*/
-	public static void hashUserPassword(User user) throws Exception {
+	public static void hashUserPassword(User user) throws Exception, WeakPasswordException {
 		
 		// Get the next random salt value to use for this password
 		byte[] salt = getNextSalt();
 		char[] password = user.getPassword().toCharArray();
 
-		// Once we've generated the hash, clear the old password
+		if (password.length <8) {
+			throw new WeakPasswordException("Password must be at least 8 characters long.");
+		}
+		boolean hasDigit = false;
+		for (Character c : password) {
+			if (Character.isDigit(c)) {
+				hasDigit = true;
+			}
+ 		}
+		if (!hasDigit) {
+			throw new WeakPasswordException("Password must contain at least 1 digit.");
+		}
+
+		// Once we've generated the hash, papaclear the old password
 		// from memory for security purposes
 		byte[] hash = getHash(password, salt);
 		Arrays.fill(password, Character.MIN_VALUE);
@@ -167,5 +182,38 @@ public final class NSALoginController {
 		// If we got this far, it means the password hashes match, so we
 		// can assume the passwords do as well.
 		return true;
+	}
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter password: ");
+		String password = scanner.nextLine();
+		User user = new User(password);
+
+		System.out.println("Password: " + user.getPassword());
+		System.out.println("Salt: " + user.getSalt());
+		System.out.println("Hashed Password: " + user.getHashedPassword());
+		try {
+			NSALoginController.hashUserPassword(user);
+			System.out.println("Password: " + user.getPassword());
+			System.out.println("Salt: " + user.getSalt());
+			System.out.println("Hashed Password: " + user.getHashedPassword());
+
+			System.out.println("Enter password: ");
+			password = scanner.nextLine();
+			user.setPassword(password);
+
+			if (NSALoginController.verifyPassword(user)) {
+				System.out.println("Verified!");
+			} else {
+				System.out.println("Not verified!");
+			}
+		}
+		catch (WeakPasswordException e) {
+			System.out.println("Weak Password Error: " + e.getMessage());
+		}
+		catch (Exception e) {
+			System.out.println("General Exception: " + e.toString());
+		}
+
 	}
 }

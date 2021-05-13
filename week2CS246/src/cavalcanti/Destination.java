@@ -1,2 +1,5 @@
-package cavalcanti;public enum Destination {
+package cavalcanti;
+
+public enum Destination {
+    MEXICO, EUROPE, JAPAN
 }

@@ -1,2 +1,7 @@
-package cavalcanti;public class WeakPasswordException {
+package cavalcanti;
+
+public class WeakPasswordException extends Exception {
+    public WeakPasswordException(String errorMessage) {
+        super(errorMessage);
+    }
 }

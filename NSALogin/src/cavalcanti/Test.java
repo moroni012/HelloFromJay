@@ -1,2 +1,7 @@
-package cavalcanti.doc;public class Test {
+package cavalcanti;
+
+public class Test {
+    public static void main(String[] args) {
+
+    }
 }

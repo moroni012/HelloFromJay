@@ -1,3 +1,5 @@
 hello
 word
 test
+Here suppose to come a new line
+Didn't have the line inserted yet

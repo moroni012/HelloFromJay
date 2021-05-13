@@ -1,2 +1,6 @@
-package cavalcanti;public interface Expense {
+package cavalcanti;
+
+public interface Expense {
+        float getCost();
+
 }
