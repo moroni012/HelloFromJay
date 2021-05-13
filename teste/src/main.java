@@ -8,5 +8,5 @@ while(x == y) {
 
     }
 
-System.out.println("done");
+System.out.println("Almost done");
 }
