@@ -1,5 +1,6 @@
 hello
 word
-test
-Here suppose to come a new line
+Test
 Didn't have the line inserted yet
+Inserted one more line here
+
